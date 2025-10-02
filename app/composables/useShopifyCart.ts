@@ -1,17 +1,17 @@
 // composables/useShopifyCart.ts
-const SHOPIFY_API =
-  "https://zayae-wellness.myshopify.com/api/2024-07/graphql.json";
-const TOKEN = "73480f6afae914a0520d5970fdb72512"; // your Storefront API token
 
 async function shopifyRequest(query: string, variables?: any) {
-  const res = await fetch(SHOPIFY_API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Shopify-Storefront-Access-Token": TOKEN,
-    },
-    body: JSON.stringify({ query, variables }),
-  });
+  const res = await fetch(
+    "https://zayae-wellness.myshopify.com/api/2024-07/graphql.json",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Storefront-Access-Token": "73480f6afae914a0520d5970fdb72512",
+      },
+      body: JSON.stringify({ query, variables }),
+    }
+  );
   return res.json();
 }
 

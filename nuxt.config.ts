@@ -8,4 +8,12 @@ export default defineNuxtConfig({
     "~/assets/css/webflow.css",
     "~/assets/css/zayae-wellness.webflow.css",
   ],
+
+  runtimeConfig: {
+    shopifySecret: process.env.SHOPIFY_TOKEN,
+
+    public: {
+      shopifyApiKey: process.env.SHOPIFY_API,
+    },
+  },
 });

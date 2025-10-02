@@ -1,4 +1,5 @@
 // composables/useProducts.ts
+
 export const useProducts = () => {
   const products = useState("products", () => []); // global reactive state
   const homeProducts = useState("homeProducts", () => []);
