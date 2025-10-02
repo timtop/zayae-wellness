@@ -1,9 +1,9 @@
 <script setup>
-// const lenis = useLenis();
 const { homeProducts, fetchProducts } = useProducts();
-// import { Swiper, SwiperSlide } from "swiper/vue";
 
-await fetchProducts();
+onMounted(async () => {
+  await fetchProducts();
+});
 </script>
 
 <template>
