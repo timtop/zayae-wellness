@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
 const { cart, subtotal } = useCart();
+const { createCart } = useShopifyCart();
 // const lenis = useLenis();
+const isLoading = ref(false);
 
 const device = useDevice();
 const isCartOpen = useState("isCartOpen", () => false);
-
-// const openCart = () => {
-//   console.log("Cart opened");
-// };
-
-// const closeCart = () => {
-//   console.log("Cart closed");
-// };
 
 onMounted(() => {
   device.checkDevice();
@@ -45,6 +39,42 @@ watch(isCartOpen, (open) => {
 
 const closeCart = () => {
   isCartOpen.value = false;
+};
+
+const checkout = async () => {
+  if (isLoading.value) return;
+  isLoading.value = true;
+  await nextTick();
+  gsap.to(".roller-logo", {
+    rotation: 360,
+    duration: 1,
+    ease: "linear",
+    repeat: -1,
+    transformOrigin: "50% 50%",
+  });
+
+  try {
+    const items = cart.value.map((item: any) => ({
+      variantId: item.variantId, // must be the Shopify `gid://` ID for the variant
+      quantity: item.quantity,
+    }));
+
+    const shopifyCart = await createCart(items);
+
+    if (shopifyCart?.checkoutUrl) {
+      window.location.href = shopifyCart.checkoutUrl; // redirect to Shopify checkout
+    } else {
+      console.error("Checkout failed:", shopifyCart);
+    }
+  } catch (err) {
+    console.error("Checkout error:", err);
+  }
+  // finally {
+  //   gsap.set(".roller-logo", {
+  //     rotation: 0,
+  //   });
+  // isLoading.value = false;
+  // }
 };
 </script>
 
@@ -88,7 +118,16 @@ const closeCart = () => {
         <div class="product-price">${{ subtotal.toFixed(2) }}</div>
       </div>
       <div class="cart-checkout">
-        <a href="#" class="c-beige_button c-full w-button">Checkout</a>
+        <button
+          @click="checkout"
+          class="c-beige_button c-full w-button checkout-btn"
+        >
+          <div v-if="!isLoading">Checkout</div>
+
+          <div v-else class="roller-logo">
+            <img src="/images/logo-roller.png" alt="zayae-logo" srcset="" />
+          </div>
+        </button>
       </div>
     </div>
   </div>

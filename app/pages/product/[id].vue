@@ -18,12 +18,20 @@ onMounted(async () => {
 
 function handleAddToCart() {
   if (!product.value) return;
+
+  const variantId = product.value.variants?.edges[0]?.node?.id;
+  if (!variantId) {
+    console.error("No variant ID found for product");
+    return;
+  }
+
   addToCart({
     id: route.params.id as string,
     title: product.value.title,
     price: product.value.variants?.edges[0]?.node?.price?.amount as string,
     image: product.value.images?.edges[0]?.node?.url as string,
     quantity: 1,
+    variantId,
   });
 }
 

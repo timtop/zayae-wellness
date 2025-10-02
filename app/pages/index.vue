@@ -1,82 +1,9 @@
 <script setup>
 // const lenis = useLenis();
 const { homeProducts, fetchProducts } = useProducts();
+// import { Swiper, SwiperSlide } from "swiper/vue";
 
-onMounted(async () => {
-  await fetchProducts();
-  // lenis.initSmoothScroll();
-});
-
-function updateNavButtons(
-  swiper,
-  prevSelector,
-  nextSelector,
-  forceNextActive = false
-) {
-  const prevBtn = document.querySelector(prevSelector);
-  const nextBtn = document.querySelector(nextSelector);
-  if (!prevBtn || !nextBtn) return;
-  // Disable prev if at start
-  prevBtn.disabled = swiper.isBeginning;
-  prevBtn.classList.toggle("disabled", swiper.isBeginning);
-  // Disable next if at end — unless forcing active on init
-  if (forceNextActive) {
-    nextBtn.disabled = false;
-    nextBtn.classList.remove("disabled");
-  } else {
-    nextBtn.disabled = swiper.isEnd;
-    nextBtn.classList.toggle("disabled", swiper.isEnd);
-  }
-}
-
-// Hero Swiper
-const heroSwiper = new Swiper(".hero-slider", {
-  loop: true,
-  speed: 800,
-  effect: "fade",
-  fadeEffect: {
-    crossFade: true,
-  },
-  autoplay: {
-    delay: 5000,
-    disableOnInteraction: false,
-  },
-  pagination: {
-    el: ".paginater",
-    clickable: true,
-  },
-  // on: {
-  //   slideChangeTransitionEnd: function () {
-  //     updatePaginaterPosition();
-  //   },
-  // },
-});
-
-const serviceSwiper = new Swiper(".services-slider", {
-  slidesPerView: "auto",
-  spaceBetween: 16,
-  navigation: {
-    nextEl: ".service-right_nav",
-    prevEl: ".service-left_nav",
-  },
-  speed: 800,
-  autoplay: {
-    delay: 2000, // 2 seconds
-    disableOnInteraction: false, // keep autoplay running even after user interaction
-  },
-  on: {
-    init: function () {
-      this.update();
-      updateNavButtons(this, ".service-left_nav", ".service-right_nav", true);
-    },
-    slideChange: function () {
-      updateNavButtons(this, ".service-left_nav", ".service-right_nav");
-    },
-    resize: function () {
-      updateNavButtons(this, ".service-left_nav", ".service-right_nav"); // handle window resize
-    },
-  },
-});
+await fetchProducts();
 </script>
 
 <template>

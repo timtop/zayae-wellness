@@ -6,6 +6,7 @@ interface CartItem {
   price: string;
   image: string;
   quantity: number;
+  variantId: string;
 }
 
 export function useCart() {

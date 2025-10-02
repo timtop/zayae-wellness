@@ -8,15 +8,4 @@ export default defineNuxtConfig({
     "~/assets/css/webflow.css",
     "~/assets/css/zayae-wellness.webflow.css",
   ],
-
-  app: {
-    head: {
-      script: [
-        {
-          src: "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js",
-          defer: true,
-        },
-      ],
-    },
-  },
 });

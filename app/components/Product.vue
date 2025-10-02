@@ -9,6 +9,7 @@ interface PriceNode {
 }
 
 interface VariantNode {
+  id: string;
   price: PriceNode;
 }
 
@@ -42,12 +43,19 @@ const quantity = computed(() => {
 });
 
 function handleAddToCart() {
+  const variantId = props.product.node.variants.edges[0]?.node.id;
+  if (!variantId) {
+    console.error("No variant ID found for product");
+    return;
+  }
+
   addToCart({
     id: props.product.node.handle,
     title: props.product.node.title,
     price: props.product.node.variants.edges[0]?.node.price.amount || "0",
     image: props.product.node.images.edges[0]?.node.url || "",
     quantity: 1,
+    variantId,
   });
 }
 
@@ -186,5 +194,6 @@ function decreaseQuantity() {
 .cart-plus,
 .cart-minus {
   padding: 10px 0px;
+  cursor: pointer;
 }
 </style>

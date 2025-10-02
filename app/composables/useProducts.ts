@@ -12,6 +12,7 @@ export const useProducts = () => {
   }
 
   interface ShopifyVariantNode {
+    id: string;
     price: {
       amount: string; // Shopify returns money amounts as strings
     };
@@ -53,6 +54,7 @@ export const useProducts = () => {
             variants(first: 1) {
               edges {
                 node {
+                  id
                   price {
                     amount
                     currencyCode
@@ -94,7 +96,7 @@ export const useProducts = () => {
           title
           descriptionHtml
           images(first: 5) { edges { node { url altText } } }
-          variants(first: 1) { edges { node { price { amount } } } }
+          variants(first: 1) { edges { node { id price { amount } } } }
           metafield(namespace: "custom", key: "active_ingredient") { value type }
         }
       }`;
