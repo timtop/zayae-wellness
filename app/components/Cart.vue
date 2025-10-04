@@ -121,6 +121,8 @@ const checkout = async () => {
         <button
           @click="checkout"
           class="c-beige_button c-full w-button checkout-btn"
+          :disabled="!cart.length || isLoading"
+          :class="{ disabled: !cart.length || isLoading }"
         >
           <div v-if="!isLoading">Checkout</div>
 
@@ -133,3 +135,12 @@ const checkout = async () => {
   </div>
   <!-- <div class="frosted-bg"></div> -->
 </template>
+
+<style lang="css" scoped>
+.checkout-btn:disabled,
+.checkout-btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+</style>

@@ -4,6 +4,60 @@
 // onMounted(async () => {
 //   lenis.initSmoothScroll();
 // });
+
+onMounted(() => {
+  const form = document.getElementById("zayae-form") as HTMLFormElement | null;
+  const successMessage = document.querySelector(
+    ".success-message-contact"
+  ) as HTMLElement | null;
+  const errorMessage = document.querySelector(
+    ".w-form-fail"
+  ) as HTMLElement | null;
+  const submitButton = form?.querySelector(
+    'input[type="submit"]'
+  ) as HTMLInputElement | null;
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Hide any previous messages
+      if (successMessage) successMessage.style.display = "none";
+      if (errorMessage) errorMessage.style.display = "none";
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.value = "Loading...";
+      }
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(
+          "https://script.google.com/macros/s/AKfycbz2JC6H2TackhaX02xA7Pk2JVRfEatLOPQ0cmHpmZkO8fxc6GDgvxjM5-Y1OSmUR0vb/exec",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          form.reset();
+          if (successMessage) successMessage.style.display = "block";
+        } else {
+          if (errorMessage) errorMessage.style.display = "block";
+        }
+      } catch (err) {
+        if (errorMessage) errorMessage.style.display = "block";
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.value = "Send Message";
+        }
+      }
+    });
+  }
+});
 </script>
 
 <template>
@@ -72,7 +126,7 @@
           </div>
           <div class="w-form">
             <form
-              id="email-form-2"
+              id="zayae-form"
               name="email-form-2"
               data-name="Email Form 2"
               method="get"
@@ -101,7 +155,7 @@
                     ><input
                       class="border-bottom_form w-input"
                       maxlength="256"
-                      name="email-2"
+                      name="email"
                       data-name="Email 2"
                       placeholder=""
                       type="email"
@@ -131,7 +185,10 @@
                 />
               </div>
             </form>
-            <div class="success-message-2 w-form-done">
+            <div
+              style="margin-top: 10px"
+              class="success-message-contact w-form-done"
+            >
               <div class="text-block-2">
                 Thank you! Your submission has been received!
               </div>

@@ -1,4 +1,58 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+onMounted(() => {
+  const form = document.getElementById("footer-form") as HTMLFormElement | null;
+  const successMessage = document.querySelector(
+    ".success-message"
+  ) as HTMLElement | null;
+  const errorMessage = document.querySelector(
+    ".w-form-fail"
+  ) as HTMLElement | null;
+  const submitButton = form?.querySelector(
+    'input[type="submit"]'
+  ) as HTMLInputElement | null;
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Hide any previous messages
+      if (successMessage) successMessage.style.display = "none";
+      if (errorMessage) errorMessage.style.display = "none";
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.value = "Loading...";
+      }
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(
+          "https://script.google.com/macros/s/AKfycbz73NsUO38lPa0VkShOkGia3bpwPLFincHRyjmitAFMfapwIBUxjOrrdQAGfLhZ9umo/exec",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          form.reset();
+          if (successMessage) successMessage.style.display = "block";
+        } else {
+          if (errorMessage) errorMessage.style.display = "block";
+        }
+      } catch (err) {
+        if (errorMessage) errorMessage.style.display = "block";
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.value = "Send Message";
+        }
+      }
+    });
+  }
+});
+</script>
 
 <template>
   <section class="c-footer">
@@ -17,7 +71,7 @@
             <div class="web-subheading-1">Subscribe to our newsletter</div>
             <div class="form-block w-form">
               <form
-                id="email-form"
+                id="footer-form"
                 name="email-form"
                 data-name="Email Form"
                 method="get"

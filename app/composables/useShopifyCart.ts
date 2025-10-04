@@ -1,7 +1,8 @@
 // composables/useShopifyCart.ts
-const config = useRuntimeConfig();
 
 async function shopifyRequest(query: string, variables?: any) {
+  const config = useRuntimeConfig();
+
   const res = await fetch(config.public.shopifyApi, {
     method: "POST",
     headers: {
