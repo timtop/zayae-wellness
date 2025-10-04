@@ -1,5 +1,43 @@
 <script setup>
 const { homeProducts, fetchProducts } = useProducts();
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Autoplay, EffectFade, Pagination, Navigation } from "swiper/modules";
+const swiperRef = ref(null);
+
+// import "swiper/css";
+import "swiper/css/effect-fade";
+// import "swiper/css/pagination";
+
+function updateNavButtons(swiper, prevSelector, nextSelector, isInit = false) {
+  const prevEl = document.querySelector(prevSelector);
+  const nextEl = document.querySelector(nextSelector);
+  if (!prevEl || !nextEl) return;
+
+  const isBeginning = swiper.isBeginning;
+  const isEnd = swiper.isEnd;
+
+  prevEl.style.opacity = isBeginning ? "0.3" : "1";
+  nextEl.style.opacity = isEnd ? "0.3" : "1";
+
+  if (isInit) {
+    prevEl.style.pointerEvents = isBeginning ? "none" : "auto";
+    nextEl.style.pointerEvents = isEnd ? "none" : "auto";
+  }
+}
+
+function onSwiperInit(swiper) {
+  swiperRef.value = swiper;
+  swiper.update();
+  updateNavButtons(swiper, ".service-left_nav", ".service-right_nav", true);
+}
+
+function onSlideChange(swiper) {
+  updateNavButtons(swiper, ".service-left_nav", ".service-right_nav");
+}
+
+function onResize(swiper) {
+  updateNavButtons(swiper, ".service-left_nav", ".service-right_nav");
+}
 
 onMounted(async () => {
   await fetchProducts();
@@ -8,365 +46,373 @@ onMounted(async () => {
 
 <template>
   <div>
-    <div class="hero-slider swiper">
+    <swiper
+      class="hero-slider"
+      wrapperClass="hero-slider_wrapper"
+      :modules="[Autoplay, EffectFade, Pagination]"
+      :loop="true"
+      :speed="800"
+      effect="fade"
+      :fadeEffect="{ crossFade: true }"
+      :autoplay="{ delay: 5000, disableOnInteraction: false }"
+      :pagination="{ el: '.paginater', clickable: true }"
+    >
       <div class="c-container_pager">
         <div class="paginater"></div>
       </div>
-      <div class="hero-slider_wrapper swiper-wrapper">
-        <div class="hero-slider_slide swiper-slide">
-          <div class="c-container_hero">
-            <div class="hero-cute_text">
-              <div class="web-paragraph-2 uc-white">
-                Whether you’re feeling drained, out of balance, or simply ready
-                for a reset, ZAYAÉ Wellness offers care that meets you where you
-                are. From IV drips to personalised weight support, our
-                treatments are crafted to help you feel nourished, energised and
-                whole again.
-              </div>
-              <!-- <NuxtLink to="/products" class="c-beige_button w-button"
+      <!-- <div class="hero-slider_wrapper swiper-wrapper"> -->
+      <swiper-slide class="hero-slider_slide swiper-slide">
+        <div class="c-container_hero">
+          <div class="hero-cute_text">
+            <div class="web-paragraph-2 uc-white">
+              Whether you’re feeling drained, out of balance, or simply ready
+              for a reset, ZAYAÉ Wellness offers care that meets you where you
+              are. From IV drips to personalised weight support, our treatments
+              are crafted to help you feel nourished, energised and whole again.
+            </div>
+            <!-- <NuxtLink to="/products" class="c-beige_button w-button"
                 >Start Your Wellness Journey</NuxtLink
               > -->
-              <BeigeButton text="Start Your Wellness Journey" to="/products" />
-            </div>
-          </div>
-          <img
-            src="//images/hero1.jpg"
-            loading="lazy"
-            sizes="(max-width: 2880px) 100vw, 2880px"
-            srcset="
-              /images/hero1-p-500.jpg   500w,
-              /images/hero1-p-800.jpg   800w,
-              /images/hero1-p-1080.jpg 1080w,
-              /images/hero1-p-1600.jpg 1600w,
-              /images/hero1-p-2000.jpg 2000w,
-              /images/hero1-p-2600.jpg 2600w,
-              /images/hero1.jpg        2880w
-            "
-            alt=""
-            class="c-img c-cover"
-          />
-          <div class="hero-text_holder">
-            <div class="c-container_hero">
-              <div class="hero-slider_holder">
-                <div class="hero-paginate_holder">
-                  <div class="hero-holder">
-                    <div class="custom-heading uc-white">
-                      Your Body Deserves Better
-                    </div>
-                  </div>
-                  <div class="hero-cute_textmobile">
-                    <div class="web-paragraph-2 uc-white">
-                      Whether you’re feeling drained, out of balance, or simply
-                      ready for a reset, ZAYAÉ Wellness offers care that meets
-                      you where you are. From IV drips to personalised weight
-                      support, our treatments are crafted to help you feel
-                      nourished, energised and whole again.
-                    </div>
-                    <BeigeButton
-                      text="Start Your Wellness Journey"
-                      to="/products"
-                    />
-                  </div>
-                </div>
-                <div class="hero-product">
-                  <div class="hero-product_image">
-                    <img
-                      src="/images/essentialdrip_hero.jpg"
-                      loading="lazy"
-                      sizes="(max-width: 553px) 100vw, 553px"
-                      srcset="
-                        /images/essentialdrip_hero-p-500.jpg 500w,
-                        /images/essentialdrip_hero.jpg       553w
-                      "
-                      alt=""
-                      class="c-img c-cover"
-                    />
-                  </div>
-                  <div class="product-hero_textholder">
-                    <div class="product-text">Alleviate</div>
-                    <div class="product-price">$199.99</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <BeigeButton text="Start Your Wellness Journey" to="/products" />
           </div>
         </div>
-        <div class="hero-slider_slide swiper-slide">
+        <img
+          src="//images/hero1.jpg"
+          loading="lazy"
+          sizes="(max-width: 2880px) 100vw, 2880px"
+          srcset="
+            /images/hero1-p-500.jpg   500w,
+            /images/hero1-p-800.jpg   800w,
+            /images/hero1-p-1080.jpg 1080w,
+            /images/hero1-p-1600.jpg 1600w,
+            /images/hero1-p-2000.jpg 2000w,
+            /images/hero1-p-2600.jpg 2600w,
+            /images/hero1.jpg        2880w
+          "
+          alt=""
+          class="c-img c-cover"
+        />
+        <div class="hero-text_holder">
           <div class="c-container_hero">
-            <div class="hero-cute_text">
-              <div class="web-paragraph-2 uc-white">
-                Safe, effective weight management solutions using FDA-approved
-                options such as Semaglutide (Ozempic®️, Wegovy®️) and
-                Tirzepatide (Mounjaro®️, Zepbound™️), provided under nurse-led
-                guidance.
-              </div>
-              <BeigeButton text="Start Your Wellness Journey" to="/products" />
-            </div>
-          </div>
-          <img
-            src="/images/hero2.jpg"
-            loading="lazy"
-            sizes="(max-width: 1440px) 100vw, 1440px"
-            srcset="
-              /images/hero2-p-500.jpg   500w,
-              /images/hero2-p-800.jpg   800w,
-              /images/hero2-p-1080.jpg 1080w,
-              /images/hero2.jpg        1440w
-            "
-            alt=""
-            class="c-img c-cover"
-          />
-          <div class="hero-text_holder">
-            <div class="c-container_hero">
-              <div class="hero-slider_holder">
-                <div class="hero-paginate_holder">
-                  <div class="paginater"></div>
-                  <div class="hero-holder">
-                    <div class="custom-heading uc-white">
-                      GLP-1 Injectable Weight Loss
-                    </div>
-                  </div>
-                  <div class="hero-cute_textmobile">
-                    <div class="web-paragraph-2 uc-white">
-                      Safe, effective weight management solutions using
-                      FDA-approved options such as Semaglutide (Ozempic®️,
-                      Wegovy®️) and Tirzepatide (Mounjaro®️, Zepbound™️),
-                      provided under nurse-led guidance.
-                    </div>
-                    <BeigeButton
-                      text="Start Your Wellness Journey"
-                      to="/products"
-                    />
+            <div class="hero-slider_holder">
+              <div class="hero-paginate_holder">
+                <div class="hero-holder">
+                  <div class="custom-heading uc-white">
+                    Your Body Deserves Better
                   </div>
                 </div>
-                <div class="hero-product">
-                  <div class="hero-product_image">
-                    <img
-                      src="/images/essentialdrip_hero.jpg"
-                      loading="lazy"
-                      sizes="(max-width: 553px) 100vw, 553px"
-                      srcset="
-                        /images/essentialdrip_hero-p-500.jpg 500w,
-                        /images/essentialdrip_hero.jpg       553w
-                      "
-                      alt=""
-                      class="c-img c-cover"
-                    />
+                <div class="hero-cute_textmobile">
+                  <div class="web-paragraph-2 uc-white">
+                    Whether you’re feeling drained, out of balance, or simply
+                    ready for a reset, ZAYAÉ Wellness offers care that meets you
+                    where you are. From IV drips to personalised weight support,
+                    our treatments are crafted to help you feel nourished,
+                    energised and whole again.
                   </div>
-                  <div class="product-hero_textholder">
-                    <div class="product-text">Alleviate</div>
-                    <div class="product-price">$199.99</div>
-                  </div>
+                  <BeigeButton
+                    text="Start Your Wellness Journey"
+                    to="/products"
+                  />
+                </div>
+              </div>
+              <div class="hero-product">
+                <div class="hero-product_image">
+                  <img
+                    src="/images/essentialdrip_hero.jpg"
+                    loading="lazy"
+                    sizes="(max-width: 553px) 100vw, 553px"
+                    srcset="
+                      /images/essentialdrip_hero-p-500.jpg 500w,
+                      /images/essentialdrip_hero.jpg       553w
+                    "
+                    alt=""
+                    class="c-img c-cover"
+                  />
+                </div>
+                <div class="product-hero_textholder">
+                  <div class="product-text">Alleviate</div>
+                  <div class="product-price">$199.99</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="hero-slider_slide swiper-slide">
+      </swiper-slide>
+      <swiper-slide class="hero-slider_slide swiper-slide">
+        <div class="c-container_hero">
+          <div class="hero-cute_text">
+            <div class="web-paragraph-2 uc-white">
+              Safe, effective weight management solutions using FDA-approved
+              options such as Semaglutide (Ozempic®️, Wegovy®️) and Tirzepatide
+              (Mounjaro®️, Zepbound™️), provided under nurse-led guidance.
+            </div>
+            <BeigeButton text="Start Your Wellness Journey" to="/products" />
+          </div>
+        </div>
+        <img
+          src="/images/hero2.jpg"
+          loading="lazy"
+          sizes="(max-width: 1440px) 100vw, 1440px"
+          srcset="
+            /images/hero2-p-500.jpg   500w,
+            /images/hero2-p-800.jpg   800w,
+            /images/hero2-p-1080.jpg 1080w,
+            /images/hero2.jpg        1440w
+          "
+          alt=""
+          class="c-img c-cover"
+        />
+        <div class="hero-text_holder">
           <div class="c-container_hero">
-            <div class="hero-cute_text">
-              <div class="web-paragraph-2 uc-white">
-                Supports cellular repair, boosts energy production, enhances
-                metabolism, and promotes cognitive function.
-              </div>
-              <BeigeButton text="Start Your Wellness Journey" to="/products" />
-            </div>
-          </div>
-          <img
-            src="/images/hero3.jpg"
-            loading="lazy"
-            sizes="(max-width: 1440px) 100vw, 1440px"
-            srcset="
-              /images/hero3-p-500.jpg   500w,
-              /images/hero3-p-800.jpg   800w,
-              /images/hero3-p-1080.jpg 1080w,
-              /images/hero3.jpg        1440w
-            "
-            alt=""
-            class="c-img c-cover"
-          />
-          <div class="hero-text_holder">
-            <div class="c-container_hero">
-              <div class="hero-slider_holder">
-                <div class="hero-paginate_holder">
-                  <div class="paginater"></div>
-                  <div class="hero-holder">
-                    <div class="custom-heading uc-white">
-                      NAD+ IV &amp; IM Therapy
-                    </div>
-                  </div>
-                  <div class="hero-cute_textmobile">
-                    <div class="web-paragraph-2 uc-white">
-                      Supports cellular repair, boosts energy production,
-                      enhances metabolism, and promotes cognitive function.
-                    </div>
-                    <BeigeButton
-                      text="Start Your Wellness Journey"
-                      to="/products"
-                    />
+            <div class="hero-slider_holder">
+              <div class="hero-paginate_holder">
+                <div class="paginater"></div>
+                <div class="hero-holder">
+                  <div class="custom-heading uc-white">
+                    GLP-1 Injectable Weight Loss
                   </div>
                 </div>
-                <div class="hero-product">
-                  <div class="hero-product_image">
-                    <img
-                      src="/images/essentialdrip_hero.jpg"
-                      loading="lazy"
-                      sizes="(max-width: 553px) 100vw, 553px"
-                      srcset="
-                        /images/essentialdrip_hero-p-500.jpg 500w,
-                        /images/essentialdrip_hero.jpg       553w
-                      "
-                      alt=""
-                      class="c-img c-cover"
-                    />
+                <div class="hero-cute_textmobile">
+                  <div class="web-paragraph-2 uc-white">
+                    Safe, effective weight management solutions using
+                    FDA-approved options such as Semaglutide (Ozempic®️,
+                    Wegovy®️) and Tirzepatide (Mounjaro®️, Zepbound™️), provided
+                    under nurse-led guidance.
                   </div>
-                  <div class="product-hero_textholder">
-                    <div class="product-text">Alleviate</div>
-                    <div class="product-price">$199.99</div>
-                  </div>
+                  <BeigeButton
+                    text="Start Your Wellness Journey"
+                    to="/products"
+                  />
+                </div>
+              </div>
+              <div class="hero-product">
+                <div class="hero-product_image">
+                  <img
+                    src="/images/essentialdrip_hero.jpg"
+                    loading="lazy"
+                    sizes="(max-width: 553px) 100vw, 553px"
+                    srcset="
+                      /images/essentialdrip_hero-p-500.jpg 500w,
+                      /images/essentialdrip_hero.jpg       553w
+                    "
+                    alt=""
+                    class="c-img c-cover"
+                  />
+                </div>
+                <div class="product-hero_textholder">
+                  <div class="product-text">Alleviate</div>
+                  <div class="product-price">$199.99</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="hero-slider_slide swiper-slide">
+      </swiper-slide>
+      <swiper-slide class="hero-slider_slide swiper-slide">
+        <div class="c-container_hero">
+          <div class="hero-cute_text">
+            <div class="web-paragraph-2 uc-white">
+              Supports cellular repair, boosts energy production, enhances
+              metabolism, and promotes cognitive function.
+            </div>
+            <BeigeButton text="Start Your Wellness Journey" to="/products" />
+          </div>
+        </div>
+        <img
+          src="/images/hero3.jpg"
+          loading="lazy"
+          sizes="(max-width: 1440px) 100vw, 1440px"
+          srcset="
+            /images/hero3-p-500.jpg   500w,
+            /images/hero3-p-800.jpg   800w,
+            /images/hero3-p-1080.jpg 1080w,
+            /images/hero3.jpg        1440w
+          "
+          alt=""
+          class="c-img c-cover"
+        />
+        <div class="hero-text_holder">
           <div class="c-container_hero">
-            <div class="hero-cute_text">
-              <div class="web-paragraph-2 uc-white">
-                Quickly boosts energy, improves mood, supports metabolism, and
-                promotes nerve health.
-              </div>
-              <BeigeButton text="Start Your Wellness Journey" to="/products" />
-            </div>
-          </div>
-          <img
-            src="/images/hero4.jpg"
-            loading="lazy"
-            sizes="(max-width: 1440px) 100vw, 1440px"
-            srcset="
-              /images/hero4-p-500.jpg   500w,
-              /images/hero4-p-800.jpg   800w,
-              /images/hero4-p-1080.jpg 1080w,
-              /images/hero4.jpg        1440w
-            "
-            alt=""
-            class="c-img c-cover"
-          />
-          <div class="hero-text_holder">
-            <div class="c-container_hero">
-              <div class="hero-slider_holder">
-                <div class="hero-paginate_holder">
-                  <div class="paginater"></div>
-                  <div class="hero-holder">
-                    <div class="custom-heading uc-white">
-                      Vitamin B-12 Injections
-                    </div>
-                  </div>
-                  <div class="hero-cute_textmobile">
-                    <div class="web-paragraph-2 uc-white">
-                      Quickly boosts energy, improves mood, supports metabolism,
-                      and promotes nerve health.
-                    </div>
-                    <BeigeButton
-                      text="Start Your Wellness Journey"
-                      to="/products"
-                    />
+            <div class="hero-slider_holder">
+              <div class="hero-paginate_holder">
+                <div class="paginater"></div>
+                <div class="hero-holder">
+                  <div class="custom-heading uc-white">
+                    NAD+ IV &amp; IM Therapy
                   </div>
                 </div>
-                <div class="hero-product">
-                  <div class="hero-product_image">
-                    <img
-                      src="/images/essentialdrip_hero.jpg"
-                      loading="lazy"
-                      sizes="(max-width: 553px) 100vw, 553px"
-                      srcset="
-                        /images/essentialdrip_hero-p-500.jpg 500w,
-                        /images/essentialdrip_hero.jpg       553w
-                      "
-                      alt=""
-                      class="c-img c-cover"
-                    />
+                <div class="hero-cute_textmobile">
+                  <div class="web-paragraph-2 uc-white">
+                    Supports cellular repair, boosts energy production, enhances
+                    metabolism, and promotes cognitive function.
                   </div>
-                  <div class="product-hero_textholder">
-                    <div class="product-text">Alleviate</div>
-                    <div class="product-price">$199.99</div>
-                  </div>
+                  <BeigeButton
+                    text="Start Your Wellness Journey"
+                    to="/products"
+                  />
+                </div>
+              </div>
+              <div class="hero-product">
+                <div class="hero-product_image">
+                  <img
+                    src="/images/essentialdrip_hero.jpg"
+                    loading="lazy"
+                    sizes="(max-width: 553px) 100vw, 553px"
+                    srcset="
+                      /images/essentialdrip_hero-p-500.jpg 500w,
+                      /images/essentialdrip_hero.jpg       553w
+                    "
+                    alt=""
+                    class="c-img c-cover"
+                  />
+                </div>
+                <div class="product-hero_textholder">
+                  <div class="product-text">Alleviate</div>
+                  <div class="product-price">$199.99</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="hero-slider_slide swiper-slide">
+      </swiper-slide>
+      <swiper-slide class="hero-slider_slide swiper-slide">
+        <div class="c-container_hero">
+          <div class="hero-cute_text">
+            <div class="web-paragraph-2 uc-white">
+              Quickly boosts energy, improves mood, supports metabolism, and
+              promotes nerve health.
+            </div>
+            <BeigeButton text="Start Your Wellness Journey" to="/products" />
+          </div>
+        </div>
+        <img
+          src="/images/hero4.jpg"
+          loading="lazy"
+          sizes="(max-width: 1440px) 100vw, 1440px"
+          srcset="
+            /images/hero4-p-500.jpg   500w,
+            /images/hero4-p-800.jpg   800w,
+            /images/hero4-p-1080.jpg 1080w,
+            /images/hero4.jpg        1440w
+          "
+          alt=""
+          class="c-img c-cover"
+        />
+        <div class="hero-text_holder">
           <div class="c-container_hero">
-            <div class="hero-cute_text">
-              <div class="web-paragraph-2 uc-white">
-                A powerful antioxidant treatment that detoxifies the body,
-                brightens skin, strengthens immunity, and supports overall
-                cellular health.
-              </div>
-              <BeigeButton text="Start Your Wellness Journey" to="/products" />
-            </div>
-          </div>
-          <img
-            src="/images/hero5.jpg"
-            loading="lazy"
-            sizes="(max-width: 1440px) 100vw, 1440px"
-            srcset="
-              /images/hero5-p-500.jpg   500w,
-              /images/hero5-p-800.jpg   800w,
-              /images/hero5-p-1080.jpg 1080w,
-              /images/hero5.jpg        1440w
-            "
-            alt=""
-            class="c-img c-cover"
-          />
-          <div class="hero-text_holder">
-            <div class="c-container_hero">
-              <div class="hero-slider_holder">
-                <div class="hero-paginate_holder">
-                  <div class="paginater"></div>
-                  <div class="hero-holder">
-                    <div class="custom-heading uc-white">
-                      Glutathione IV Therapy
-                    </div>
-                  </div>
-                  <div class="hero-cute_textmobile">
-                    <div class="web-paragraph-2 uc-white">
-                      A powerful antioxidant treatment that detoxifies the body,
-                      brightens skin, strengthens immunity, and supports overall
-                      cellular health.
-                    </div>
-                    <BeigeButton
-                      text="Start Your Wellness Journey"
-                      to="/products"
-                    />
+            <div class="hero-slider_holder">
+              <div class="hero-paginate_holder">
+                <div class="paginater"></div>
+                <div class="hero-holder">
+                  <div class="custom-heading uc-white">
+                    Vitamin B-12 Injections
                   </div>
                 </div>
-                <div class="hero-product">
-                  <div class="hero-product_image">
-                    <img
-                      src="/images/essentialdrip_hero.jpg"
-                      loading="lazy"
-                      sizes="(max-width: 553px) 100vw, 553px"
-                      srcset="
-                        /images/essentialdrip_hero-p-500.jpg 500w,
-                        /images/essentialdrip_hero.jpg       553w
-                      "
-                      alt=""
-                      class="c-img c-cover"
-                    />
+                <div class="hero-cute_textmobile">
+                  <div class="web-paragraph-2 uc-white">
+                    Quickly boosts energy, improves mood, supports metabolism,
+                    and promotes nerve health.
                   </div>
-                  <div class="product-hero_textholder">
-                    <div class="product-text">Alleviate</div>
-                    <div class="product-price">$199.99</div>
-                  </div>
+                  <BeigeButton
+                    text="Start Your Wellness Journey"
+                    to="/products"
+                  />
+                </div>
+              </div>
+              <div class="hero-product">
+                <div class="hero-product_image">
+                  <img
+                    src="/images/essentialdrip_hero.jpg"
+                    loading="lazy"
+                    sizes="(max-width: 553px) 100vw, 553px"
+                    srcset="
+                      /images/essentialdrip_hero-p-500.jpg 500w,
+                      /images/essentialdrip_hero.jpg       553w
+                    "
+                    alt=""
+                    class="c-img c-cover"
+                  />
+                </div>
+                <div class="product-hero_textholder">
+                  <div class="product-text">Alleviate</div>
+                  <div class="product-price">$199.99</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </swiper-slide>
+      <swiper-slide class="hero-slider_slide swiper-slide">
+        <div class="c-container_hero">
+          <div class="hero-cute_text">
+            <div class="web-paragraph-2 uc-white">
+              A powerful antioxidant treatment that detoxifies the body,
+              brightens skin, strengthens immunity, and supports overall
+              cellular health.
+            </div>
+            <BeigeButton text="Start Your Wellness Journey" to="/products" />
+          </div>
+        </div>
+        <img
+          src="/images/hero5.jpg"
+          loading="lazy"
+          sizes="(max-width: 1440px) 100vw, 1440px"
+          srcset="
+            /images/hero5-p-500.jpg   500w,
+            /images/hero5-p-800.jpg   800w,
+            /images/hero5-p-1080.jpg 1080w,
+            /images/hero5.jpg        1440w
+          "
+          alt=""
+          class="c-img c-cover"
+        />
+        <div class="hero-text_holder">
+          <div class="c-container_hero">
+            <div class="hero-slider_holder">
+              <div class="hero-paginate_holder">
+                <div class="paginater"></div>
+                <div class="hero-holder">
+                  <div class="custom-heading uc-white">
+                    Glutathione IV Therapy
+                  </div>
+                </div>
+                <div class="hero-cute_textmobile">
+                  <div class="web-paragraph-2 uc-white">
+                    A powerful antioxidant treatment that detoxifies the body,
+                    brightens skin, strengthens immunity, and supports overall
+                    cellular health.
+                  </div>
+                  <BeigeButton
+                    text="Start Your Wellness Journey"
+                    to="/products"
+                  />
+                </div>
+              </div>
+              <div class="hero-product">
+                <div class="hero-product_image">
+                  <img
+                    src="/images/essentialdrip_hero.jpg"
+                    loading="lazy"
+                    sizes="(max-width: 553px) 100vw, 553px"
+                    srcset="
+                      /images/essentialdrip_hero-p-500.jpg 500w,
+                      /images/essentialdrip_hero.jpg       553w
+                    "
+                    alt=""
+                    class="c-img c-cover"
+                  />
+                </div>
+                <div class="product-hero_textholder">
+                  <div class="product-text">Alleviate</div>
+                  <div class="product-price">$199.99</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </swiper-slide>
+      <!-- </div> -->
+    </swiper>
 
     <section class="product-section">
       <div class="c-container">
@@ -549,141 +595,158 @@ onMounted(async () => {
               </div>
             </div>
           </div>
-          <div class="services-slider swiper">
-            <div class="services-slider_wrapper swiper-wrapper">
-              <div class="services-slide swiper-slide">
-                <img
-                  src="/images/service1.jpg"
-                  loading="lazy"
-                  sizes="(max-width: 996px) 100vw, 996px"
-                  srcset="
-                    /images/service1-p-500.jpg 500w,
-                    /images/service1-p-800.jpg 800w,
-                    /images/service1.jpg       996w
-                  "
-                  alt=""
-                  class="c-img c-cover"
-                />
-                <div class="service-slide_text">
-                  <div class="web-subheading-1 uc-white">
-                    Wellness + Vitality
-                  </div>
-                  <div class="web-small_paragraph">
-                    For when you just want to feel like you again: clear,
-                    steady, and ready for anything.
-                  </div>
+          <Swiper
+            ref="swiperRef"
+            class="services-slider"
+            wrapperClass="services-slider_wrapper"
+            :modules="[Navigation, Autoplay]"
+            slides-per-view="auto"
+            :space-between="16"
+            :speed="800"
+            :autoplay="{
+              delay: 2000,
+              disableOnInteraction: false,
+            }"
+            :navigation="{
+              nextEl: '.service-right_nav',
+              prevEl: '.service-left_nav',
+            }"
+            @swiper="onSwiperInit"
+            @slideChange="onSlideChange"
+            @resize="onResize"
+          >
+            <!-- <div class="services-slider_wrapper swiper-wrapper"> -->
+            <SwiperSlide class="services-slide swiper-slide">
+              <img
+                src="/images/service1.jpg"
+                loading="lazy"
+                sizes="(max-width: 996px) 100vw, 996px"
+                srcset="
+                  /images/service1-p-500.jpg 500w,
+                  /images/service1-p-800.jpg 800w,
+                  /images/service1.jpg       996w
+                "
+                alt=""
+                class="c-img c-cover"
+              />
+              <div class="service-slide_text">
+                <div class="web-subheading-1 uc-white">Wellness + Vitality</div>
+                <div class="web-small_paragraph">
+                  For when you just want to feel like you again: clear, steady,
+                  and ready for anything.
                 </div>
               </div>
-              <div class="services-slide swiper-slide">
-                <img
-                  src="/images/service2.jpg"
-                  loading="lazy"
-                  sizes="(max-width: 996px) 100vw, 996px"
-                  srcset="
-                    /images/service2-p-500.jpg 500w,
-                    /images/service2-p-800.jpg 800w,
-                    /images/service2.jpg       996w
-                  "
-                  alt=""
-                  class="c-img c-cover"
-                />
-                <div class="service-slide_text">
-                  <div class="web-subheading-1 uc-white">
-                    Mental Clarity + Mood Support
-                  </div>
-                  <div class="web-small_paragraph">
-                    For clear thinking, calm energy, and a brighter mood that
-                    lasts.
-                  </div>
+            </SwiperSlide>
+            <SwiperSlide class="services-slide swiper-slide">
+              <img
+                src="/images/service2.jpg"
+                loading="lazy"
+                sizes="(max-width: 996px) 100vw, 996px"
+                srcset="
+                  /images/service2-p-500.jpg 500w,
+                  /images/service2-p-800.jpg 800w,
+                  /images/service2.jpg       996w
+                "
+                alt=""
+                class="c-img c-cover"
+              />
+              <div class="service-slide_text">
+                <div class="web-subheading-1 uc-white">
+                  Mental Clarity + Mood Support
+                </div>
+                <div class="web-small_paragraph">
+                  For clear thinking, calm energy, and a brighter mood that
+                  lasts.
                 </div>
               </div>
-              <div class="services-slide swiper-slide">
-                <img
-                  src="/images/service3.jpg"
-                  loading="lazy"
-                  sizes="(max-width: 996px) 100vw, 996px"
-                  srcset="
-                    /images/service3-p-500.jpg 500w,
-                    /images/service3-p-800.jpg 800w,
-                    /images/service3.jpg       996w
-                  "
-                  alt=""
-                  class="c-img c-cover"
-                />
-                <div class="service-slide_text">
-                  <div class="web-subheading-1 uc-white">Skin + Beauty</div>
-                  <div class="web-small_paragraph">
-                    Your inside-out secret to brighter, smoother, softer skin.
-                  </div>
+            </SwiperSlide>
+            <SwiperSlide class="services-slide swiper-slide">
+              <img
+                src="/images/service3.jpg"
+                loading="lazy"
+                sizes="(max-width: 996px) 100vw, 996px"
+                srcset="
+                  /images/service3-p-500.jpg 500w,
+                  /images/service3-p-800.jpg 800w,
+                  /images/service3.jpg       996w
+                "
+                alt=""
+                class="c-img c-cover"
+              />
+              <div class="service-slide_text">
+                <div class="web-subheading-1 uc-white">Skin + Beauty</div>
+                <div class="web-small_paragraph">
+                  Your inside-out secret to brighter, smoother, softer skin.
                 </div>
               </div>
-              <div class="services-slide swiper-slide">
-                <img
-                  src="/images/service4.jpg"
-                  loading="lazy"
-                  sizes="(max-width: 996px) 100vw, 996px"
-                  srcset="
-                    /images/service4-p-500.jpg 500w,
-                    /images/service4-p-800.jpg 800w,
-                    /images/service4.jpg       996w
-                  "
-                  alt=""
-                  class="c-img c-cover"
-                />
-                <div class="service-slide_text">
-                  <div class="web-subheading-1 uc-white">
-                    Weight Support + Metabolic Care
-                  </div>
-                  <div class="web-small_paragraph">
-                    Support that helps you feel lighter on your feet
-                  </div>
+            </SwiperSlide>
+            <SwiperSlide class="services-slide swiper-slide">
+              <img
+                src="/images/service4.jpg"
+                loading="lazy"
+                sizes="(max-width: 996px) 100vw, 996px"
+                srcset="
+                  /images/service4-p-500.jpg 500w,
+                  /images/service4-p-800.jpg 800w,
+                  /images/service4.jpg       996w
+                "
+                alt=""
+                class="c-img c-cover"
+              />
+              <div class="service-slide_text">
+                <div class="web-subheading-1 uc-white">
+                  Weight Support + Metabolic Care
+                </div>
+                <div class="web-small_paragraph">
+                  Support that helps you feel lighter on your feet
                 </div>
               </div>
-              <div class="services-slide swiper-slide">
-                <img
-                  src="/images/service5.jpg"
-                  loading="lazy"
-                  sizes="(max-width: 996px) 100vw, 996px"
-                  srcset="
-                    /images/service5-p-500.jpg 500w,
-                    /images/service5-p-800.jpg 800w,
-                    /images/service5.jpg       996w
-                  "
-                  alt=""
-                  class="c-img c-cover"
-                />
-                <div class="service-slide_text">
-                  <div class="web-subheading-1 uc-white">
-                    Recovery + Restoration
-                  </div>
-                  <div class="web-small_paragraph">
-                    The deep reset your body’s been asking for.
-                  </div>
+            </SwiperSlide>
+            <SwiperSlide class="services-slide swiper-slide">
+              <img
+                src="/images/service5.jpg"
+                loading="lazy"
+                sizes="(max-width: 996px) 100vw, 996px"
+                srcset="
+                  /images/service5-p-500.jpg 500w,
+                  /images/service5-p-800.jpg 800w,
+                  /images/service5.jpg       996w
+                "
+                alt=""
+                class="c-img c-cover"
+              />
+              <div class="service-slide_text">
+                <div class="web-subheading-1 uc-white">
+                  Recovery + Restoration
+                </div>
+                <div class="web-small_paragraph">
+                  The deep reset your body’s been asking for.
                 </div>
               </div>
-              <div class="services-slide swiper-slide">
-                <img
-                  src="/images/service6.jpg"
-                  loading="lazy"
-                  sizes="(max-width: 996px) 100vw, 996px"
-                  srcset="
-                    /images/service6-p-500.jpg 500w,
-                    /images/service6-p-800.jpg 800w,
-                    /images/service6.jpg       996w
-                  "
-                  alt=""
-                  class="c-img c-cover"
-                />
-                <div class="service-slide_text">
-                  <div class="web-subheading-1 uc-white">Active Recovery</div>
-                  <div class="web-small_paragraph">
-                    Help your body recharge after the hard work’s done<br />Restore
-                    what your body spent
-                  </div>
+            </SwiperSlide>
+            <SwiperSlide class="services-slide swiper-slide">
+              <img
+                src="/images/service6.jpg"
+                loading="lazy"
+                sizes="(max-width: 996px) 100vw, 996px"
+                srcset="
+                  /images/service6-p-500.jpg 500w,
+                  /images/service6-p-800.jpg 800w,
+                  /images/service6.jpg       996w
+                "
+                alt=""
+                class="c-img c-cover"
+              />
+              <div class="service-slide_text">
+                <div class="web-subheading-1 uc-white">Active Recovery</div>
+                <div class="web-small_paragraph">
+                  Help your body recharge after the hard work’s done<br />Restore
+                  what your body spent
                 </div>
               </div>
-            </div>
-          </div>
+            </SwiperSlide>
+            <!-- </div> -->
+          </Swiper>
           <div class="product-btn_holder">
             <BrownButton text="See All Our Services" to="/products" />
           </div>
