@@ -5,6 +5,7 @@ export const useProducts = () => {
   const homeProducts = useState("homeProducts", () => []);
   const product = useState<ShopifyProduct | null>("product", () => null);
 
+  const config = useRuntimeConfig();
   // types/shopify.ts
 
   interface ShopifyImageNode {
@@ -70,18 +71,14 @@ export const useProducts = () => {
   `;
 
     try {
-      const response = await fetch(
-        "https://zayae-wellness.myshopify.com/api/2024-07/graphql.json",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Shopify-Storefront-Access-Token":
-              "73480f6afae914a0520d5970fdb72512",
-          },
-          body: JSON.stringify({ query }),
-        }
-      );
+      const response = await fetch(config.public.shopifyApi, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Storefront-Access-Token": config.public.shopifySecret,
+        },
+        body: JSON.stringify({ query }),
+      });
       const data = await response.json();
       products.value = data.data.products.edges;
       homeProducts.value = products.value.slice(0, 3);
@@ -102,18 +99,14 @@ export const useProducts = () => {
         }
       }`;
 
-    const res = await fetch(
-      "https://zayae-wellness.myshopify.com/api/2024-07/graphql.json",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Shopify-Storefront-Access-Token":
-            "73480f6afae914a0520d5970fdb72512",
-        },
-        body: JSON.stringify({ query, variables: { handle } }),
-      }
-    );
+    const res = await fetch(config.public.shopifyApi, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Storefront-Access-Token": config.public.shopifySecret,
+      },
+      body: JSON.stringify({ query, variables: { handle } }),
+    });
 
     const data = await res.json();
     product.value = data.data.product;

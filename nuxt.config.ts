@@ -42,10 +42,9 @@ export default defineNuxtConfig({
   ],
 
   runtimeConfig: {
-    shopifySecret: process.env.SHOPIFY_TOKEN,
-
     public: {
-      shopifyApiKey: process.env.SHOPIFY_API,
+      shopifyApi: process.env.SHOPIFY_API,
+      shopifySecret: process.env.SHOPIFY_TOKEN,
     },
   },
 });
