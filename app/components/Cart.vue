@@ -15,6 +15,21 @@ onMounted(() => {
   } else {
     gsap.set(".cart-modal", { x: "100%" });
   }
+
+  // Watch for cart changes to re-enable/disable the checkout button
+  watch(
+    () => cart.value.length,
+    (newLength) => {
+      const checkoutBtn = document.querySelector(
+        ".checkout-btn"
+      ) as HTMLButtonElement | null;
+      if (checkoutBtn) {
+        checkoutBtn.disabled = newLength === 0;
+        checkoutBtn.classList.toggle("disabled", newLength === 0);
+      }
+    },
+    { immediate: true }
+  );
 });
 
 watch(isCartOpen, (open) => {
@@ -69,11 +84,11 @@ const checkout = async () => {
   } catch (err) {
     console.error("Checkout error:", err);
   }
-  // finally {
+  //  finally {
+  //   isLoading.value = false;
   //   gsap.set(".roller-logo", {
   //     rotation: 0,
   //   });
-  // isLoading.value = false;
   // }
 };
 </script>
