@@ -16,7 +16,10 @@ async function shopifyRequest(query: string, variables?: any) {
 
 export const useShopifyCart = () => {
   // Step 1: create a cart with items
-  async function createCart(items: { variantId: string; quantity: number }[]) {
+  async function createCart(
+    items: { variantId: string; quantity: number }[],
+    bookingTime: string
+  ) {
     const mutation = `
       mutation cartCreate($input: CartInput) {
         cartCreate(input: $input) {
@@ -34,6 +37,7 @@ export const useShopifyCart = () => {
 
     const variables = {
       input: {
+        attributes: [{ key: "booking_time", value: bookingTime }],
         lines: items.map((i) => ({
           merchandiseId: i.variantId,
           quantity: i.quantity,

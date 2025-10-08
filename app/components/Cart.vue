@@ -4,6 +4,7 @@ const { cart, subtotal } = useCart();
 const { createCart } = useShopifyCart();
 // const lenis = useLenis();
 const isLoading = ref(false);
+const date = ref("");
 
 const device = useDevice();
 const isCartOpen = useState("isCartOpen", () => false);
@@ -74,9 +75,10 @@ const checkout = async () => {
       quantity: item.quantity,
     }));
 
-    const shopifyCart = await createCart(items);
+    const shopifyCart = await createCart(items, date.value);
 
     if (shopifyCart?.checkoutUrl) {
+      console.log(shopifyCart.checkoutUrl);
       window.location.href = shopifyCart.checkoutUrl; // redirect to Shopify checkout
     } else {
       console.error("Checkout failed:", shopifyCart);
@@ -124,6 +126,19 @@ const checkout = async () => {
             </svg>
           </div>
         </div>
+      </div>
+      <div>
+        <form>
+          <label for="booking"> Booking </label>
+
+          <input
+            type="date"
+            name="booking"
+            placeholder="booking"
+            id="booking"
+            v-model="date"
+          />
+        </form>
       </div>
       <div class="cart-items">
         <CartItem v-for="item in cart" :key="item.id" :item="item" />
