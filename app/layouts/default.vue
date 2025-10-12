@@ -1,9 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { TooltipProvider } from "@/components/ui/tooltip";
+</script>
 
 <template>
   <div>
-    <NavBar />
-    <slot />
-    <Footer />
+    <TooltipProvider>
+      <NavBar />
+      <slot />
+      <Footer />
+    </TooltipProvider>
   </div>
 </template>

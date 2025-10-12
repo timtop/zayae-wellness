@@ -4,6 +4,8 @@ const { products, fetchProducts } = useProducts();
 
 onMounted(async () => {
   await fetchProducts();
+  console.log(products.value);
+
   // lenis.initSmoothScroll();
 });
 </script>

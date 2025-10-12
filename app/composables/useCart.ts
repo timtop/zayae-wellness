@@ -5,8 +5,10 @@ interface CartItem {
   title: string;
   price: string;
   image: string;
+  compareAtPrice?: string;
   quantity: number;
   variantId: string;
+  productType: string;
 }
 
 export function useCart() {
@@ -51,6 +53,17 @@ export function useCart() {
     )
   );
 
+  const combinedSubtotal = computed(() =>
+    cart.value.reduce((sum, item) => {
+      const type = (item.productType || "").toLowerCase();
+      const itemPrice =
+        type === "bookable"
+          ? Number(item.compareAtPrice || 0)
+          : Number(item.price || 0);
+      return sum + itemPrice * item.quantity;
+    }, 0)
+  );
+
   return {
     cart,
     addToCart,
@@ -59,5 +72,6 @@ export function useCart() {
     clearCart,
     totalItems,
     subtotal,
+    combinedSubtotal,
   };
 }

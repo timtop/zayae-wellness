@@ -431,81 +431,6 @@ onMounted(async () => {
           </div>
           <div class="product-show">
             <Product v-for="product in homeProducts" :product="product" />
-            <!-- <div class="product">
-              <div class="hero-product_image">
-                <img
-                  src="/images/essentialdrip_hero.jpg"
-                  loading="lazy"
-                  sizes="(max-width: 553px) 100vw, 553px"
-                  srcset="
-                    /images/essentialdrip_hero-p-500.jpg 500w,
-                    /images/essentialdrip_hero.jpg       553w
-                  "
-                  alt=""
-                  class="c-img c-cover"
-                />
-              </div>
-              <div class="product-textholder">
-                <div class="product-details">
-                  <div class="web-subheading-2">B-lean</div>
-                  <div class="product-price">$159.99</div>
-                </div>
-                <div class="cart-holder">
-                  <div class="cart-counter">
-                    <div class="cart-minus">
-                      <img
-                        src="/images/minus.svg"
-                        loading="lazy"
-                        alt=""
-                        class="c-img c-cover"
-                      />
-                    </div>
-                    <div class="web-body-text uc-brown">1</div>
-                    <div class="cart-plus">
-                      <img
-                        src="/images/plus.svg"
-                        loading="lazy"
-                        alt=""
-                        class="c-img c-cover"
-                      />
-                    </div>
-                  </div>
-                  <div class="cart-button">
-                    <div class="w-embed">
-                      <svg
-                        width="31"
-                        height="31"
-                        viewbox="0 0 31 31"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M7.52246 3.03687L3.77246 8.03687V25.5369C3.77246 26.1999 4.03585 26.8358 4.50469 27.3046C4.97353 27.7735 5.60942 28.0369 6.27246 28.0369H23.7725C24.4355 28.0369 25.0714 27.7735 25.5402 27.3046C26.0091 26.8358 26.2725 26.1999 26.2725 25.5369V8.03687L22.5225 3.03687H7.52246Z"
-                          stroke="#974619"
-                          stroke-width="2.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        ></path>
-                        <path
-                          d="M3.77246 8.03687H26.2725"
-                          stroke="#974619"
-                          stroke-width="2.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        ></path>
-                        <path
-                          d="M20.0225 13.0369C20.0225 14.3629 19.4957 15.6347 18.558 16.5724C17.6203 17.5101 16.3485 18.0369 15.0225 18.0369C13.6964 18.0369 12.4246 17.5101 11.4869 16.5724C10.5492 15.6347 10.0225 14.3629 10.0225 13.0369"
-                          stroke="#974619"
-                          stroke-width="2.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
           <div class="product-btn_holder">
             <BrownButton text="See All Our Products" to="/products" />
@@ -794,6 +719,9 @@ onMounted(async () => {
 </template>
 
 <style lang="css" scoped>
+.services-slide img {
+  width: auto;
+}
 .disabled {
   opacity: 0.5;
   pointer-events: none;

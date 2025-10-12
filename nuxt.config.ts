@@ -1,4 +1,5 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import tailwindcss from "@tailwindcss/vite";
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -39,6 +40,7 @@ export default defineNuxtConfig({
     "~/assets/css/normalize.css",
     "~/assets/css/webflow.css",
     "~/assets/css/zayae-wellness.webflow.css",
+    "~/assets/css/tailwind.css",
   ],
 
   runtimeConfig: {
@@ -46,5 +48,22 @@ export default defineNuxtConfig({
       shopifyApi: process.env.SHOPIFY_API,
       shopifySecret: process.env.SHOPIFY_TOKEN,
     },
+  },
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
+  modules: ["shadcn-nuxt"],
+  shadcn: {
+    /**
+     * Prefix for all the imported component
+     */
+    prefix: "",
+    /**
+     * Directory that the component lives in.
+     * @default "./components/ui"
+     */
+    componentDir: "./app/components/ui",
   },
 });

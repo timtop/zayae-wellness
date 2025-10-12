@@ -7,6 +7,8 @@ interface Item {
   price: string;
   image: string;
   quantity: number;
+  productType: string;
+  compareAtPrice?: string | null;
 }
 
 const props = defineProps<{
@@ -46,8 +48,21 @@ function decreaseQuantity() {
     <div class="cart-item_details">
       <div class="cart-item_holder">
         <div class="cart-item_name">
+          <div class="badge">
+            {{
+              item.productType.toLowerCase() === "bookable"
+                ? "Service"
+                : "Product"
+            }}
+          </div>
           <div class="web-subheading-1">{{ item.title }}</div>
-          <div class="product-price">${{ item.price }}</div>
+          <div class="product-price">
+            ${{
+              item.productType.toLowerCase() === "bookable"
+                ? item.compareAtPrice
+                : item.price
+            }}
+          </div>
         </div>
         <div @click="removeFromCart(item.id)" class="remove-item">
           <div class="w-embed">
@@ -90,40 +105,46 @@ function decreaseQuantity() {
           </div>
         </div>
       </div>
-      <div class="cart-counter-product_white">
-        <div @click="decreaseQuantity" class="cart-minus">
-          <svg
-            width="13"
-            height="2"
-            viewBox="0 0 13 2"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.505859 0.0546875H12.3338V1.7444H0.505859V0.0546875Z"
-              fill="#974619"
-            />
-          </svg>
+      <div>
+        <div
+          v-if="item.productType.toLowerCase() !== 'bookable'"
+          class="cart-counter-product_white"
+        >
+          <div @click="decreaseQuantity" class="cart-minus">
+            <svg
+              width="13"
+              height="2"
+              viewBox="0 0 13 2"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.505859 0.0546875H12.3338V1.7444H0.505859V0.0546875Z"
+                fill="#974619"
+              />
+            </svg>
+          </div>
+          <div class="web-body-text uc-brown">{{ quantity }}</div>
+          <div @click="increaseQuantity" class="cart-plus">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 13 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.652344 6.05469H12.4803V7.7444H0.652344V6.05469Z"
+                fill="#974619"
+              />
+              <path
+                d="M7.41211 0.984375L7.41211 12.8123H5.7224L5.7224 0.984375L7.41211 0.984375Z"
+                fill="#974619"
+              />
+            </svg>
+          </div>
         </div>
-        <div class="web-body-text uc-brown">{{ quantity }}</div>
-        <div @click="increaseQuantity" class="cart-plus">
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 13 13"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.652344 6.05469H12.4803V7.7444H0.652344V6.05469Z"
-              fill="#974619"
-            />
-            <path
-              d="M7.41211 0.984375L7.41211 12.8123H5.7224L5.7224 0.984375L7.41211 0.984375Z"
-              fill="#974619"
-            />
-          </svg>
-        </div>
+        <div class="booking-fee" v-else>Booking fee: ${{ item.price }}</div>
       </div>
     </div>
   </div>

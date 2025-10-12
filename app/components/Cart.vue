@@ -1,10 +1,19 @@
 <script setup lang="ts">
+import { Info } from "lucide-vue-next";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { gsap } from "gsap";
-const { cart, subtotal } = useCart();
+const { cart, subtotal, combinedSubtotal } = useCart();
 const { createCart } = useShopifyCart();
 // const lenis = useLenis();
 const isLoading = ref(false);
-const date = ref("");
+const date = ref<Date | null>(null);
+const time = ref<string>("");
 
 const device = useDevice();
 const isCartOpen = useState("isCartOpen", () => false);
@@ -16,21 +25,24 @@ onMounted(() => {
   } else {
     gsap.set(".cart-modal", { x: "100%" });
   }
+});
 
-  // Watch for cart changes to re-enable/disable the checkout button
-  watch(
-    () => cart.value.length,
-    (newLength) => {
-      const checkoutBtn = document.querySelector(
-        ".checkout-btn"
-      ) as HTMLButtonElement | null;
-      if (checkoutBtn) {
-        checkoutBtn.disabled = newLength === 0;
-        checkoutBtn.classList.toggle("disabled", newLength === 0);
-      }
-    },
-    { immediate: true }
-  );
+// const bookingFee = computed(() => {
+//   const bookableItem = cart.value.find(
+//     (item: any) => item.productType.toLowerCase() === "bookable"
+//   );
+//   return bookableItem ? Number(bookableItem.compareAtPrice || 0) : 0;
+// });
+
+const hasBookableItem = computed(() =>
+  cart.value.some((item: any) => item.productType.toLowerCase() === "bookable")
+);
+
+const isCheckoutDisabled = computed(() => {
+  const cartEmpty = !cart.value.length;
+  const missingBookingDetails =
+    hasBookableItem.value && (!date.value || !time.value);
+  return cartEmpty || isLoading.value || missingBookingDetails;
 });
 
 watch(isCartOpen, (open) => {
@@ -75,7 +87,25 @@ const checkout = async () => {
       quantity: item.quantity,
     }));
 
-    const shopifyCart = await createCart(items, date.value);
+    // Format the date and time for Shopify
+    const appointmentDate = date.value
+      ? date.value.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      : undefined;
+    const appointmentTime = time.value || undefined;
+
+    const shopifyCart = await createCart(
+      items,
+      appointmentDate,
+      appointmentTime
+    );
+
+    console.log(items);
+    console.log(appointmentDate);
+    console.log(appointmentTime);
 
     if (shopifyCart?.checkoutUrl) {
       console.log(shopifyCart.checkoutUrl);
@@ -128,31 +158,81 @@ const checkout = async () => {
         </div>
       </div>
       <div>
-        <form>
-          <label for="booking"> Booking </label>
-
-          <input
-            type="date"
-            name="booking"
-            placeholder="booking"
-            id="booking"
-            v-model="date"
-          />
-        </form>
+        <BookingDateTimePicker
+          v-if="hasBookableItem"
+          v-model:date="date"
+          v-model:time="time"
+        />
       </div>
       <div class="cart-items">
         <CartItem v-for="item in cart" :key="item.id" :item="item" />
       </div>
       <div class="cart-subtotal">
-        <div class="web-subheading-1">Subtotal</div>
-        <div class="product-price">${{ subtotal.toFixed(2) }}</div>
+        <div class="cart-subtotal-upper">
+          <div class="flex items-center gap-2">
+            <div class="web-subheading-1 low-priority">Subtotal</div>
+
+            <div>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button variant="outline" size="icon">
+                    <Info class="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="top"
+                  :sideOffset="2"
+                  class="width-[60px] !z-[999999]"
+                >
+                  <p>
+                    This is the amount the services and products selected costs,
+                    excluding any booking fees.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </div>
+          <div class="product-price low-priority">
+            ${{ combinedSubtotal.toFixed(2) }}
+          </div>
+        </div>
+
+        <div class="cart-subtotal-lower">
+          <div class="flex items-center gap-2">
+            <div class="web-subheading-1">Amount to pay</div>
+            <div>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button variant="outline" size="icon">
+                    <Info class="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="top"
+                  :sideOffset="2"
+                  class="width-[60px] !z-[999999]"
+                >
+                  <p>
+                    This amount includes the booking fee for the service and the
+                    cost of any selected products.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </div>
+
+          <div class="product-price">${{ subtotal.toFixed(2) }}</div>
+        </div>
       </div>
+
       <div class="cart-checkout">
         <button
           @click="checkout"
           class="c-beige_button c-full w-button checkout-btn"
-          :disabled="!cart.length || isLoading"
-          :class="{ disabled: !cart.length || isLoading }"
+          :disabled="isCheckoutDisabled"
+          :class="{
+            disabled: isCheckoutDisabled,
+          }"
         >
           <div v-if="!isLoading">Checkout</div>
 
