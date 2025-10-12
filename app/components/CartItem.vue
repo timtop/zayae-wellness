@@ -50,7 +50,7 @@ function decreaseQuantity() {
         <div class="cart-item_name">
           <div class="badge">
             {{
-              item.productType.toLowerCase() === "bookable"
+              item?.productType?.toLowerCase() === "bookable"
                 ? "Service"
                 : "Product"
             }}
@@ -58,7 +58,7 @@ function decreaseQuantity() {
           <div class="web-subheading-1">{{ item.title }}</div>
           <div class="product-price">
             ${{
-              item.productType.toLowerCase() === "bookable"
+              item?.productType?.toLowerCase() === "bookable"
                 ? item.compareAtPrice
                 : item.price
             }}
@@ -107,7 +107,7 @@ function decreaseQuantity() {
       </div>
       <div>
         <div
-          v-if="item.productType.toLowerCase() !== 'bookable'"
+          v-if="item?.productType?.toLowerCase() !== 'bookable'"
           class="cart-counter-product_white"
         >
           <div @click="decreaseQuantity" class="cart-minus">

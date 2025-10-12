@@ -55,11 +55,11 @@ export function useCart() {
 
   const combinedSubtotal = computed(() =>
     cart.value.reduce((sum, item) => {
-      const type = (item.productType || "").toLowerCase();
+      const type = (item?.productType || "").toLowerCase();
       const itemPrice =
         type === "bookable"
-          ? Number(item.compareAtPrice || 0)
-          : Number(item.price || 0);
+          ? Number(item?.compareAtPrice || 0)
+          : Number(item?.price || 0);
       return sum + itemPrice * item.quantity;
     }, 0)
   );

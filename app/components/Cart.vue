@@ -27,15 +27,10 @@ onMounted(() => {
   }
 });
 
-// const bookingFee = computed(() => {
-//   const bookableItem = cart.value.find(
-//     (item: any) => item.productType.toLowerCase() === "bookable"
-//   );
-//   return bookableItem ? Number(bookableItem.compareAtPrice || 0) : 0;
-// });
-
 const hasBookableItem = computed(() =>
-  cart.value.some((item: any) => item.productType.toLowerCase() === "bookable")
+  cart.value.some(
+    (item: any) => item?.productType?.toLowerCase() === "bookable"
+  )
 );
 
 const isCheckoutDisabled = computed(() => {
