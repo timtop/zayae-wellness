@@ -952,7 +952,7 @@
   grid-column-gap: 32px;
   grid-row-gap: 32px;
   flex-flow: column;
-  height: 100vh;
+  height: 90vh;
   padding: 40px;
   display: flex;
 }
