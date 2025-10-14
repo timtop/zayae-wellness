@@ -747,6 +747,7 @@
   position: absolute;
   top: auto;
   bottom: 64px;
+  width: 70%;
 }
 
 .all-products {
@@ -952,7 +953,7 @@
   grid-column-gap: 32px;
   grid-row-gap: 32px;
   flex-flow: column;
-  height: 90vh;
+  height: 100vh;
   padding: 40px;
   display: flex;
 }
@@ -1472,7 +1473,7 @@
   .cart-container {
     grid-column-gap: 16px;
     grid-row-gap: 16px;
-    /* height: 90vh; */
+    height: 90vh;
     padding: 20px;
   }
 

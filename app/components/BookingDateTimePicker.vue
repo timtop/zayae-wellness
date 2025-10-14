@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { format } from "date-fns";
+import { today, getLocalTimeZone, CalendarDate } from "@internationalized/date";
 import type { DateValue } from "reka-ui";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
@@ -13,9 +14,73 @@ import {
 const date = defineModel<Date | null>("date", { default: null });
 const time = defineModel<string>("time", { default: "" });
 
+// Get today's date as the minimum selectable date
+const minDate = today(getLocalTimeZone());
+
+// Check if selected date is today
+const isToday = computed(() => {
+  if (!date.value) return false;
+  const now = new Date();
+  return (
+    date.value.getFullYear() === now.getFullYear() &&
+    date.value.getMonth() === now.getMonth() &&
+    date.value.getDate() === now.getDate()
+  );
+});
+
+// Get current time as minimum time for today
+const minTime = computed(() => {
+  if (!isToday.value) return "";
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
+});
+
+// Validate if a time is in the past
+const isTimePast = (timeString: string): boolean => {
+  if (!isToday.value || !timeString) return false;
+  const now = new Date();
+  const timeParts = timeString.split(":");
+  if (timeParts.length !== 2 || !timeParts[0] || !timeParts[1]) return false;
+  const hours = parseInt(timeParts[0], 10);
+  const minutes = parseInt(timeParts[1], 10);
+  if (isNaN(hours) || isNaN(minutes)) return false;
+  const selectedDateTime = new Date();
+  selectedDateTime.setHours(hours, minutes, 0, 0);
+  return selectedDateTime < now;
+};
+
+// Watch for time changes and validate against current time
+watch(time, (newTime) => {
+  if (isToday.value && newTime) {
+    if (isTimePast(newTime)) {
+      // Reset to empty if trying to select a past time
+      time.value = "";
+    }
+  }
+});
+
+// Watch for date changes and clear invalid time
+watch(date, () => {
+  if (isToday.value && time.value) {
+    if (isTimePast(time.value)) {
+      time.value = "";
+    }
+  }
+});
+
 // Convert Date to DateValue for the Calendar component
 const calendarValue = computed({
-  get: () => (date.value ? (date.value as unknown as DateValue) : undefined),
+  get: (): DateValue | undefined => {
+    if (!date.value) return undefined;
+    // Properly convert JavaScript Date to CalendarDate
+    return new CalendarDate(
+      date.value.getFullYear(),
+      date.value.getMonth() + 1, // JavaScript months are 0-indexed
+      date.value.getDate()
+    ) as DateValue;
+  },
   set: (val: DateValue | undefined) => {
     if (val) {
       // Convert DateValue to JavaScript Date object
@@ -51,7 +116,7 @@ const formattedDate = computed(() =>
           </Button>
         </PopoverTrigger>
         <PopoverContent class="p-0 !z-[150]" side="bottom" align="start">
-          <Calendar v-model="calendarValue" />
+          <Calendar v-model="calendarValue" :min-value="minDate" />
         </PopoverContent>
       </Popover>
     </div>
@@ -79,6 +144,7 @@ const formattedDate = computed(() =>
           <input
             type="time"
             v-model="time"
+            :min="isToday ? minTime : undefined"
             class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brown-500"
           />
         </PopoverContent>

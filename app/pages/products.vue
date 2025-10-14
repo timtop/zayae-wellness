@@ -31,7 +31,7 @@ onMounted(async () => {
       />
       <div class="c-container_hero">
         <div class="product-hero_text">
-          <div class="custom-heading uc-white">Our Products</div>
+          <div class="custom-heading uc-white">Treatments and Products</div>
         </div>
       </div>
     </div>
