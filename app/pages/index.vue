@@ -450,7 +450,7 @@ onMounted(async () => {
                 feel.
               </div>
               <div class="web-paragraph-2">
-                We are a mobile wellness boutique offering IV therapy,
+                We are a concierge wellness boutique offering IV therapy,
                 rejuvenating treatments, and personalized weight support
                 solutions, including GLP-1 injectables. Every service is
                 designed to help you feel better, physically, emotionally, and
