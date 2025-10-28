@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   app: {
     head: {
-      title: "Zayae Wellness",
+      // titleTemplate: "%s | Zayae Wellness",
       link: [
         { rel: "icon", type: "image/x-icon", href: "/favicon.jpg" },
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -22,14 +22,18 @@ export default defineNuxtConfig({
           name: "description",
           content: "Restore you balance, Reclaim your glow.",
         },
-
+        {
+          name: "keywords",
+          content:
+            "IV therapy, IV drip therapy, concierge wellness, personalized weight support, glutathione IV therapy, vitamin B12 injections, metabolic wellness, recovery & restoration treatments, health & vitality clinic, holistic wellness treatments, concierge wellness services, injectable weight loss solutions",
+        },
         // Open Graph
         { property: "og:title", content: "Zayae Wellness" },
         {
           property: "og:description",
           content: "Restore you balance, Reclaim your glow.",
         },
-        { property: "og:image", content: "/open-graph.jpg" },
+        { property: "og:image", content: "open-graph.jpg" },
         { property: "og:url", content: "https://zayaewellness.com" },
         { property: "og:type", content: "website" },
 

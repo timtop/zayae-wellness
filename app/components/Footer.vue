@@ -117,8 +117,10 @@ onMounted(() => {
           <div class="footer-link_holder">
             <div class="web-subheading-2">Find Us</div>
             <div class="footer-links_holder">
-              <a href="#" class="footer-link">bookings@zayaewellness.com</a>
-              <a href="#" class="footer-link">+1 4109148640</a>
+              <a href="mailto:bookings@zayaewellness.com" class="footer-link"
+                >bookings@zayaewellness.com</a
+              >
+              <a href="tel:+14109148640" class="footer-link">+1 4109148640</a>
               <a href="#" class="footer-link"
                 >849 Fairmount Avenue <br />Suite 200 T-26</a
               >
@@ -127,8 +129,12 @@ onMounted(() => {
           <div class="footer-link_holder">
             <div class="web-subheading-2">Find Us</div>
             <div class="footer-links_holder">
-              <a href="#" class="footer-link">Terms &amp; Conditions</a>
-              <a href="#" class="footer-link">Privacy Policy</a>
+              <NuxtLink to="terms-and-conditions" class="footer-link"
+                >Terms &amp; Conditions</NuxtLink
+              >
+              <NuxtLink to="privacy-policy" class="footer-link"
+                >Privacy Policy</NuxtLink
+              >
             </div>
           </div>
           <div class="footer-link_holder">

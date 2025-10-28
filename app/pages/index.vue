@@ -1,4 +1,10 @@
 <script setup>
+usePageMeta({
+  title: "Zayae Wellness | Restore you balance, Reclaim your glow.",
+  description: "Restore you balance, Reclaim your glow.",
+  path: "/index",
+});
+
 const { homeProducts, fetchProducts } = useProducts();
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, EffectFade, Pagination, Navigation } from "swiper/modules";

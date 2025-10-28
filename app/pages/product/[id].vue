@@ -1,4 +1,10 @@
 <script setup lang="ts">
+usePageMeta({
+  title: "Products and Treatments | Zayae Wellness",
+  description: "Explore our range of wellness products and treatments.",
+  path: "/products",
+});
+
 // const lenis = useLenis();
 const { product, fetchSingleProduct } = useProducts();
 const { cart, addToCart, updateQuantity, removeFromCart } = useCart();
