@@ -740,6 +740,27 @@
 .product-hero {
   height: 75vh;
   position: relative;
+  background-color: #974619;
+}
+
+.privacy-hero {
+  height: 50vh;
+  position: relative;
+  background-color: #974619;
+}
+
+.private-heading {
+  font-family: Instrument Sans, sans-serif;
+  font-weight: 900;
+  line-height: 120%;
+  font-size: 20px;
+  margin-top: 40px;
+}
+.private-subheading {
+  font-family: Instrument Sans, sans-serif;
+  font-weight: 900;
+  line-height: 120%;
+  font-size: 16px;
 }
 
 .product-hero_text {

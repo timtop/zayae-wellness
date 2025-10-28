@@ -28,34 +28,59 @@ const isToday = computed(() => {
   );
 });
 
-// Get current time as minimum time for today
-const minTime = computed(() => {
-  if (!isToday.value) return "";
-  const now = new Date();
-  const hours = String(now.getHours()).padStart(2, "0");
-  const minutes = String(now.getMinutes()).padStart(2, "0");
-  return `${hours}:${minutes}`;
-});
+// Define working hours (9am to 5pm)
+const WORKING_HOURS_START = 9;
+const WORKING_HOURS_END = 17;
 
-// Validate if a time is in the past
-const isTimePast = (timeString: string): boolean => {
-  if (!isToday.value || !timeString) return false;
-  const now = new Date();
-  const timeParts = timeString.split(":");
-  if (timeParts.length !== 2 || !timeParts[0] || !timeParts[1]) return false;
-  const hours = parseInt(timeParts[0], 10);
-  const minutes = parseInt(timeParts[1], 10);
-  if (isNaN(hours) || isNaN(minutes)) return false;
-  const selectedDateTime = new Date();
-  selectedDateTime.setHours(hours, minutes, 0, 0);
-  return selectedDateTime < now;
+// Generate time slots from 9am to 5pm
+const generateTimeSlots = () => {
+  const slots: string[] = [];
+  for (let hour = WORKING_HOURS_START; hour <= WORKING_HOURS_END; hour++) {
+    // Add hour:00
+    const hourStr = String(hour).padStart(2, "0");
+    slots.push(`${hourStr}:00`);
+    // Add hour:30 (except for the last hour)
+    if (hour < WORKING_HOURS_END) {
+      slots.push(`${hourStr}:30`);
+    }
+  }
+  return slots;
 };
 
-// Watch for time changes and validate against current time
+const timeSlots = generateTimeSlots();
+
+// Filter available time slots based on current time if today
+const availableTimeSlots = computed(() => {
+  if (!isToday.value) return timeSlots;
+
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinute = now.getMinutes();
+  const currentTimeInMinutes = currentHour * 60 + currentMinute;
+
+  return timeSlots.filter(slot => {
+    const parts = slot.split(':');
+    const hours = parseInt(parts[0] || '0', 10);
+    const minutes = parseInt(parts[1] || '0', 10);
+    const slotTimeInMinutes = hours * 60 + minutes;
+    return slotTimeInMinutes > currentTimeInMinutes;
+  });
+});
+
+// Validate if a time is outside working hours or in the past
+const isTimeInvalid = (timeString: string): boolean => {
+  if (!timeString) return false;
+
+  // Check if time is in available slots
+  const isAvailable = availableTimeSlots.value.includes(timeString);
+  return !isAvailable;
+};
+
+// Watch for time changes and validate against working hours and current time
 watch(time, (newTime) => {
-  if (isToday.value && newTime) {
-    if (isTimePast(newTime)) {
-      // Reset to empty if trying to select a past time
+  if (newTime) {
+    if (isTimeInvalid(newTime)) {
+      // Reset to empty if trying to select an invalid time
       time.value = "";
     }
   }
@@ -63,8 +88,8 @@ watch(time, (newTime) => {
 
 // Watch for date changes and clear invalid time
 watch(date, () => {
-  if (isToday.value && time.value) {
-    if (isTimePast(time.value)) {
+  if (time.value) {
+    if (isTimeInvalid(time.value)) {
       time.value = "";
     }
   }
@@ -94,6 +119,20 @@ const calendarValue = computed({
 
 const formattedDate = computed(() =>
   date.value ? format(date.value, "EEE, MMM d, yyyy") : "Select date"
+);
+
+// Format time to 12-hour format with AM/PM
+const formatTime = (timeString: string): string => {
+  if (!timeString) return timeString;
+  const [hours, minutes] = timeString.split(':').map(Number);
+  if (hours === undefined || minutes === undefined) return timeString;
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const displayHours = hours % 12 || 12;
+  return `${displayHours}:${String(minutes).padStart(2, '0')} ${period}`;
+};
+
+const formattedTime = computed(() =>
+  time.value ? formatTime(time.value) : "Select time"
 );
 </script>
 
@@ -133,20 +172,28 @@ const formattedDate = computed(() =>
             variant="outline"
             class="w-full justify-start text-left font-normal [border:1px_solid_#0000001a!important]"
           >
-            <span>{{ time || "Select time" }}</span>
+            <span>{{ formattedTime }}</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          class="p-3 w-[240px] !z-[150]"
+          class="p-3 w-[240px] max-h-[300px] overflow-y-auto !z-[150]"
           side="bottom"
           align="start"
         >
-          <input
-            type="time"
-            v-model="time"
-            :min="isToday ? minTime : undefined"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brown-500"
-          />
+          <div class="space-y-1">
+            <button
+              v-for="slot in availableTimeSlots"
+              :key="slot"
+              @click="time = slot"
+              class="w-full text-left px-3 py-2 text-sm rounded-md hover:bg-gray-100 transition-colors"
+              :class="{ 'bg-brown-500 text-white hover:bg-brown-600': time === slot }"
+            >
+              {{ formatTime(slot) }}
+            </button>
+            <div v-if="availableTimeSlots.length === 0" class="px-3 py-2 text-sm text-gray-500 text-center">
+              No available times today
+            </div>
+          </div>
         </PopoverContent>
       </Popover>
     </div>

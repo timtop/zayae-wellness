@@ -1,4 +1,9 @@
 <script setup lang="ts">
+usePageMeta({
+  title: "Contact Us | Zayae Wellness",
+  description: "Get in touch with Zayae Wellness today.",
+  path: "/contact",
+});
 // const lenis = useLenis();
 
 // onMounted(async () => {

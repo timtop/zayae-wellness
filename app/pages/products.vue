@@ -1,4 +1,10 @@
 <script setup>
+usePageMeta({
+  title: "Products and Treatments | Zayae Wellness",
+  description: "Explore our range of wellness products and treatments.",
+  path: "/products",
+});
+
 // const lenis = useLenis();
 const { products, fetchProducts } = useProducts();
 
