@@ -1,4 +1,4 @@
-<script lang="ts">
+<script setup lang="ts">
 usePageMeta({
   title: "Terms and Conditions | Zayae Wellness",
   description:
@@ -10,19 +10,6 @@ usePageMeta({
 <template>
   <section class="contact-hero_section">
     <div class="privacy-hero">
-      <!-- <img
-        src="/images/cotact-hero.jpg"
-        loading="lazy"
-        sizes="(max-width: 1440px) 100vw, 1440px"
-        srcset="
-          /images/cotact-hero-p-500.jpg   500w,
-          /images/cotact-hero-p-800.jpg   800w,
-          /images/cotact-hero-p-1080.jpg 1080w,
-          /images/cotact-hero.jpg        1440w
-        "
-        alt=""
-        class="c-img c-cover"
-      /> -->
       <div class="c-container">
         <div class="product-hero_text private-hero_text">
           <div class="custom-heading uc-white">Terms and Conditions</div>
