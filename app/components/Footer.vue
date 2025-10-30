@@ -158,7 +158,20 @@ onMounted(() => {
         </div>
         <div class="footer-copyright">
           <div class="hr"></div>
-          <div>Zayae Wellness © All Rights Reserved</div>
+          <div
+            class="flex flex-col items-center md:flex-row justify-between md:items-start text-center md:text-left w-full"
+          >
+            <div>Zayae Wellness © All Rights Reserved</div>
+
+            <div class="office-hours mt-8 md:mt-0">
+              <div class="office-hours_title font-bold">Office Hours</div>
+              <div class="office-hours_times">
+                <div>Monday - Friday: 9:00 AM - 5:00 PM</div>
+                <div>Saturday: Appointment Only</div>
+                <div>Sunday: Appointment Only</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

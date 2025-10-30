@@ -101,7 +101,7 @@ usePageMeta({
           <li>To process payments and billing</li>
           <li>
             To communicate with you (appointment reminders, service updates,
-            newsletters, marketing — subject to consent where required)
+            newsletters, marketing subject to consent where required)
           </li>
           <li>To improve our website, offerings, and customer experience</li>
           <li>To conduct analytics and aggregate usage statistics</li>
@@ -278,7 +278,7 @@ usePageMeta({
           We implement reasonable safeguards (encryption, access controls,
           secure servers, policies) to protect your information from
           unauthorized access, alteration, or destruction. However, no system is
-          entirely secure—absolute security cannot be guaranteed.
+          entirely secure absolute security cannot be guaranteed.
         </p>
         <!-- International Transfers -->
         <h2 class="private-heading">International Transfers</h2>
@@ -302,7 +302,7 @@ usePageMeta({
         <p class="private-body">
           Our website may link to third-party websites, widgets, or services
           (e.g. social media, booking tools). We are not responsible for their
-          privacy practices—review their privacy policies separately.
+          privacy practices review their privacy policies separately.
         </p>
         <!-- ⁠Changes to This Policy -->
         <h2 class="private-heading">⁠Changes to This Policy</h2>

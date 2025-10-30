@@ -38,11 +38,11 @@ usePageMeta({
           ZAYAÉ Wellness is a nurse-led wellness practice providing IV
           hydration, vitamin therapy, weight management, and related
           health-supportive services under the supervision of licensed medical
-          professionals. The information provided on this website — including,
-          but not limited to, treatment descriptions, ingredient details, or
-          expected results — is not intended to diagnose, treat, cure, or
-          prevent any medical condition and should not be used as a substitute
-          for personalized medical advice from a qualified healthcare provider.
+          professionals. The information provided on this website including, but
+          not limited to, treatment descriptions, ingredient details, or
+          expected results is not intended to diagnose, treat, cure, or prevent
+          any medical condition and should not be used as a substitute for
+          personalized medical advice from a qualified healthcare provider.
         </p>
         <p class="private-body">
           Always consult with your physician or licensed healthcare professional
@@ -54,11 +54,11 @@ usePageMeta({
           ZAYAÉ Wellness is a nurse-led wellness practice providing IV
           hydration, vitamin therapy, weight management, and related
           health-supportive services under the supervision of licensed medical
-          professionals. The information provided on this website — including,
-          but not limited to, treatment descriptions, ingredient details, or
-          expected results — is not intended to diagnose, treat, cure, or
-          prevent any medical condition and should not be used as a substitute
-          for personalized medical advice from a qualified healthcare provider.
+          professionals. The information provided on this website including, but
+          not limited to, treatment descriptions, ingredient details, or
+          expected results is not intended to diagnose, treat, cure, or prevent
+          any medical condition and should not be used as a substitute for
+          personalized medical advice from a qualified healthcare provider.
         </p>
 
         <h2 class="private-heading">No Practitioner-Patient Relationship</h2>
@@ -106,7 +106,7 @@ usePageMeta({
           employees, contractors, and affiliates shall not be liable for any
           direct, indirect, incidental, consequential, or special damages
           arising out of or in connection with your use of this website, its
-          content, or the services provided — even if advised of the possibility
+          content, or the services provided even if advised of the possibility
           of such damages. All services are provided “as is” and “as available,”
           without any warranty or guarantee of specific results.
         </p>

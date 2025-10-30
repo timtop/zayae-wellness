@@ -439,7 +439,10 @@ onMounted(async () => {
             <Product v-for="product in homeProducts" :product="product" />
           </div>
           <div class="product-btn_holder">
-            <BrownButton text="See All Our Products" to="/products" />
+            <BrownButton
+              text="See All Our Treatments & Products"
+              to="/products"
+            />
           </div>
         </div>
       </div>
@@ -679,7 +682,10 @@ onMounted(async () => {
             <!-- </div> -->
           </Swiper>
           <div class="product-btn_holder">
-            <BrownButton text="See All Our Services" to="/products" />
+            <BrownButton
+              text="See All Our Treatments & Products"
+              to="/products"
+            />
           </div>
         </div>
       </div>
