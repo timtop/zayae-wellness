@@ -14,6 +14,9 @@ export const useProducts = () => {
   }
 
   interface ShopifyVariantNode {
+    compareAtPrice: {
+      amount: string;
+    } | null;
     id: string;
     price: {
       amount: string; // Shopify returns money amounts as strings
@@ -24,6 +27,7 @@ export const useProducts = () => {
     id: string;
     title: string;
     descriptionHtml: string;
+    productType: string;
     images: {
       edges: { node: ShopifyImageNode }[];
     };
@@ -48,6 +52,7 @@ export const useProducts = () => {
             title
             handle
             description
+            productType
             images(first: 1) {
               edges {
                 node { url }
@@ -61,6 +66,10 @@ export const useProducts = () => {
                     amount
                     currencyCode
                   }
+                  compareAtPrice {
+                  amount
+                  currencyCode
+                }
                 }
               }
             }
@@ -92,9 +101,13 @@ export const useProducts = () => {
         product(handle: $handle) {
           id
           title
+          productType
           descriptionHtml
           images(first: 5) { edges { node { url altText } } }
-          variants(first: 1) { edges { node { id price { amount } } } }
+          variants(first: 1) { edges { node { id price { amount } compareAtPrice {
+                  amount
+                  currencyCode
+                } } } }
           metafield(namespace: "custom", key: "active_ingredient") { value type }
         }
       }`;

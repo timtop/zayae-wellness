@@ -8,6 +8,9 @@
   --black--100: #a7a9a8;
 }
 
+/* .full-width {
+  width: 100%;
+} */
 .c-container {
   flex-flow: column;
   justify-content: center;
@@ -167,6 +170,11 @@
   font-family: Instrument Sans, sans-serif;
 }
 
+.badge {
+  background-color: #feeac6;
+  padding: 4px 8px;
+}
+
 .product-hero_textholder {
   justify-content: space-between;
   align-items: center;
@@ -180,6 +188,23 @@
   font-family: Instrument Sans, sans-serif;
   font-size: 24px;
   font-weight: 600;
+}
+.low-priority {
+  color: #a7a9a8;
+}
+
+.tooltip-content {
+  z-index: 999999999 !important;
+}
+
+.cart-modal {
+  overflow: visible;
+}
+
+.booking-fee {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: Instrument Sans, sans-serif;
 }
 
 .hero-text_holder {
@@ -382,6 +407,40 @@
 .c-brown_button {
   background-color: var(--brown--500);
   padding: 16px 48px;
+}
+.book-now-btn {
+  background-color: var(--brown--500);
+  padding: 16px 32px;
+  color: white;
+  cursor: pointer;
+}
+.book-now-btn_full {
+  background-color: var(--beige--500);
+  padding: 16px 32px;
+  color: var(--brown--500);
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+}
+
+.added-btn_full {
+  border: 2px solid var(--beige--500);
+  padding: 16px 32px;
+  color: var(--beige--500);
+  cursor: not-allowed;
+}
+
+.added-btn {
+  border: 2px solid var(--brown--500);
+  padding: 16px 32px;
+  color: var(--brown--500);
+  cursor: not-allowed;
+  /* display: none; */
+}
+
+.book-now-btn:hover {
+  background-color: var(--beige--200);
+  color: var(--brown--500);
 }
 
 .wellness-section {
@@ -681,6 +740,27 @@
 .product-hero {
   height: 75vh;
   position: relative;
+  background-color: #974619;
+}
+
+.privacy-hero {
+  height: 50vh;
+  position: relative;
+  background-color: #974619;
+}
+
+.private-heading {
+  font-family: Instrument Sans, sans-serif;
+  font-weight: 900;
+  line-height: 120%;
+  font-size: 20px;
+  margin-top: 40px;
+}
+.private-subheading {
+  font-family: Instrument Sans, sans-serif;
+  font-weight: 900;
+  line-height: 120%;
+  font-size: 16px;
 }
 
 .product-hero_text {
@@ -688,6 +768,7 @@
   position: absolute;
   top: auto;
   bottom: 64px;
+  width: 70%;
 }
 
 .all-products {
@@ -917,8 +998,8 @@
   border-bottom: 1px solid #0000001a;
   flex-flow: column;
   height: 70%;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  /* padding-top: 32px;
+  padding-bottom: 32px; */
   display: flex;
   overflow: auto;
 }
@@ -977,10 +1058,23 @@
 
 .cart-subtotal {
   border-bottom: 1px solid #0000001a;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 32px;
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  padding-bottom: 16px;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cart-subtotal-upper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cart-subtotal-lower {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .cart-checkout {
@@ -1401,6 +1495,7 @@
     grid-column-gap: 16px;
     grid-row-gap: 16px;
     height: 90vh;
+    padding: 20px;
   }
 
   .mobile-nav {
@@ -1469,6 +1564,9 @@
 }
 
 @media screen and (max-width: 479px) {
+  .footer-logo_holder {
+    height: auto;
+  }
   .nav-link_holders {
     grid-column-gap: 20px;
     grid-row-gap: 20px;
@@ -1531,5 +1629,15 @@
 
   .web-paragraph-2-copy {
     font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .book-now-btn {
+    padding: 10px 16px;
+  }
+
+  .added-btn {
+    padding: 10px 16px;
   }
 }

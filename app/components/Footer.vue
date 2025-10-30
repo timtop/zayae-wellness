@@ -117,8 +117,10 @@ onMounted(() => {
           <div class="footer-link_holder">
             <div class="web-subheading-2">Find Us</div>
             <div class="footer-links_holder">
-              <a href="#" class="footer-link">bookings@zayaewellness.com</a>
-              <a href="#" class="footer-link">+1 4109148640</a>
+              <a href="mailto:bookings@zayaewellness.com" class="footer-link"
+                >bookings@zayaewellness.com</a
+              >
+              <a href="tel:+14109148640" class="footer-link">+1 4109148640</a>
               <a href="#" class="footer-link"
                 >849 Fairmount Avenue <br />Suite 200 T-26</a
               >
@@ -127,8 +129,12 @@ onMounted(() => {
           <div class="footer-link_holder">
             <div class="web-subheading-2">Find Us</div>
             <div class="footer-links_holder">
-              <a href="#" class="footer-link">Terms &amp; Conditions</a>
-              <a href="#" class="footer-link">Privacy Policy</a>
+              <NuxtLink to="terms-and-conditions" class="footer-link"
+                >Terms &amp; Conditions</NuxtLink
+              >
+              <NuxtLink to="privacy-policy" class="footer-link"
+                >Privacy Policy</NuxtLink
+              >
             </div>
           </div>
           <div class="footer-link_holder">
@@ -152,7 +158,20 @@ onMounted(() => {
         </div>
         <div class="footer-copyright">
           <div class="hr"></div>
-          <div>Zayae Wellness © All Rights Reserved</div>
+          <div
+            class="flex flex-col items-center md:flex-row justify-between md:items-start text-center md:text-left w-full"
+          >
+            <div>Zayae Wellness © All Rights Reserved</div>
+
+            <div class="office-hours mt-8 md:mt-0">
+              <div class="office-hours_title font-bold">Office Hours</div>
+              <div class="office-hours_times">
+                <div>Monday - Friday: 9:00 AM - 5:00 PM</div>
+                <div>Saturday: Appointment Only</div>
+                <div>Sunday: Appointment Only</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -16,7 +16,11 @@ async function shopifyRequest(query: string, variables?: any) {
 
 export const useShopifyCart = () => {
   // Step 1: create a cart with items
-  async function createCart(items: { variantId: string; quantity: number }[]) {
+  async function createCart(
+    items: { variantId: string; quantity: number }[],
+    appointmentDate?: string,
+    appointmentTime?: string
+  ) {
     const mutation = `
       mutation cartCreate($input: CartInput) {
         cartCreate(input: $input) {
@@ -32,8 +36,18 @@ export const useShopifyCart = () => {
       }
     `;
 
+    // Build attributes array based on what's provided
+    const attributes = [];
+    if (appointmentDate) {
+      attributes.push({ key: "appointment_date", value: appointmentDate });
+    }
+    if (appointmentTime) {
+      attributes.push({ key: "appointment_time", value: appointmentTime });
+    }
+
     const variables = {
       input: {
+        attributes,
         lines: items.map((i) => ({
           merchandiseId: i.variantId,
           quantity: i.quantity,
